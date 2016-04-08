@@ -4,7 +4,16 @@ function divElementEnostavniTekst(sporocilo) {
   var jeJpg = sporocilo.indexOf('.jpg') > -1;
   var jeGif = sporocilo.indexOf('.gif') > -1;
   
-  if (jeSmesko || jeGif || jePng || jeJpg) {
+  if (jeSmesko) {
+    sporocilo = sporocilo.replace(/\</g, '&lt;').replace(/\>/g, '&gt;').replace('&lt;img', '<img').replace('png\' /&gt;', 'png\' />');
+    return $('<div style="font-weight: bold"></div>').html(sporocilo);
+  } else if(jeGif) {
+    sporocilo = sporocilo.replace(/\</g, '&lt;').replace(/\>/g, '&gt;').replace('&lt;img', '<img').replace('gif\' /&gt;', 'gif\' />');
+    return $('<div style="font-weight: bold"></div>').html(sporocilo);
+  } else if(jeJpg) {
+    sporocilo = sporocilo.replace(/\</g, '&lt;').replace(/\>/g, '&gt;').replace('&lt;img', '<img').replace('jpg\' /&gt;', 'jpg\' />'); 
+    return $('<div style="font-weight: bold"></div>').html(sporocilo);
+  } else if(jePng) {
     sporocilo = sporocilo.replace(/\</g, '&lt;').replace(/\>/g, '&gt;').replace('&lt;img', '<img').replace('png\' /&gt;', 'png\' />');
     return $('<div style="font-weight: bold"></div>').html(sporocilo);
   } else {
@@ -80,7 +89,12 @@ $(document).ready(function() {
 
   socket.on('sporocilo', function (sporocilo) {
     var novElement = divElementEnostavniTekst(sporocilo.besedilo);
-    $('#sporocila').append(novElement);
+/*    $("#novElement").each(function(){
+          if(!$(this).find('img').length){
+         $(this).html($(this).html().replace(/(http:\/\/\S+(\.png|\.jpg|\.gif))/g, '<a href="$1"><img src="$1" /></a>'));
+          }
+    }); */
+        $('#sporocila').append(novElement);
   });
   
   socket.on('kanali', function(kanali) {
@@ -126,29 +140,12 @@ $(document).ready(function() {
   
 });
 function dodajSliko(vhodnoBesedilo) {
-  
-    vhodnoBesedilo = vhodnoBesedilo.replace(new RegExp('http:', 'gi'), function() {
-      var zamenjava = '<img src = "http:';
-      return zamenjava;
-    });
-       vhodnoBesedilo = vhodnoBesedilo.replace(new RegExp('https:', 'gi'), function() {
-      var zamenjava = '<img src = "https:';
-      return zamenjava;
-    });
-    vhodnoBesedilo = vhodnoBesedilo.replace(new RegExp('.jpg', 'gi'), function() {
-      return '.jpg">';
-    });
-        vhodnoBesedilo = vhodnoBesedilo.replace(new RegExp('.png', 'gi'), function() {
-      return '.png">';
-    });
-        vhodnoBesedilo = vhodnoBesedilo.replace(new RegExp('.gif', 'gi'), function() {
-      return '.gif">';
-    });
-  //return $('<div style="font-weight: bold"></div>').html(vhodnoBesedilo);
-  return vhodnoBesedilo;
+
+    vhodnoBesedilo = vhodnoBesedilo.replace(new RegExp("(https?:\/\/.*\.(?:png|jpg|gif))", "gi"), "<img src='$1'width='200'/>");
+    return vhodnoBesedilo;
+
 }
 
-  
 function dodajSmeske(vhodnoBesedilo) {
   var preslikovalnaTabela = {
     ";)": "wink.png",
