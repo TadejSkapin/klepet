@@ -3,18 +3,21 @@ function divElementEnostavniTekst(sporocilo) {
   var jePng = sporocilo.indexOf('.png') > -1;
   var jeJpg = sporocilo.indexOf('.jpg') > -1;
   var jeGif = sporocilo.indexOf('.gif') > -1;
-  
-  if (jeSmesko) {
+  return $('<div style="font-weight: bold;"></div>').html(sporocilo);
+   if (jeSmesko) {
     sporocilo = sporocilo.replace(/\</g, '&lt;').replace(/\>/g, '&gt;').replace('&lt;img', '<img').replace('png\' /&gt;', 'png\' />');
     return $('<div style="font-weight: bold"></div>').html(sporocilo);
   } else if(jeGif) {
-    sporocilo = sporocilo.replace(/\</g, '&lt;').replace(/\>/g, '&gt;').replace('&lt;img', '<img').replace('gif\' /&gt;', 'gif\' />');
+   sporocilo = sporocilo.replace(new RegExp("<", "gi"), "&lt;").replace(new RegExp(">", "gi"), "&gt;").replace(new RegExp("&lt;img", "gi"), "<img")
+   .replace(new RegExp(".gif padding ='20' width='200'/&gt;", "gi"), ".gif style='padding:20px' width='200'/>;");
     return $('<div style="font-weight: bold"></div>').html(sporocilo);
   } else if(jeJpg) {
-    sporocilo = sporocilo.replace(/\</g, '&lt;').replace(/\>/g, '&gt;').replace('&lt;img', '<img').replace('jpg\' /&gt;', 'jpg\' />'); 
+   sporocilo = sporocilo.replace(new RegExp("<", "gi"), "&lt;").replace(new RegExp(">", "gi"), "&gt;").replace(new RegExp("&lt;img", "gi"), "<img")
+   .replace(new RegExp(".jpg padding ='20' width='200'/&gt;", "gi"), ".jpg style='padding:20px' width='200'/>;");
     return $('<div style="font-weight: bold"></div>').html(sporocilo);
   } else if(jePng) {
-    sporocilo = sporocilo.replace(/\</g, '&lt;').replace(/\>/g, '&gt;').replace('&lt;img', '<img').replace('png\' /&gt;', 'png\' />');
+   sporocilo = sporocilo.replace(new RegExp("<", "gi"), "&lt;").replace(new RegExp(">", "gi"), "&gt;").replace(new RegExp("&lt;img", "gi"), "<img")
+   .replace(new RegExp(".png padding ='20' width='200'/&gt;", "gi"), ".png style='padding:20px' width='200'/>;");
     return $('<div style="font-weight: bold"></div>').html(sporocilo);
   } else {
     return $('<div style="font-weight: bold;"></div>').text(sporocilo);
@@ -91,8 +94,6 @@ $(document).ready(function() {
     var novElement = divElementEnostavniTekst(sporocilo.besedilo);
 /*    $("#novElement").each(function(){
           if(!$(this).find('img').length){
-         $(this).html($(this).html().replace(/(http:\/\/\S+(\.png|\.jpg|\.gif))/g, '<a href="$1"><img src="$1" /></a>'));
-          }
     }); */
         $('#sporocila').append(novElement);
   });
@@ -141,7 +142,7 @@ $(document).ready(function() {
 });
 function dodajSliko(vhodnoBesedilo) {
 
-    vhodnoBesedilo = vhodnoBesedilo.replace(new RegExp("(https?:\/\/.*\.(?:png|jpg|gif))", "gi"), "<img src='$1'width='200'/>");
+    vhodnoBesedilo = vhodnoBesedilo.replace(new RegExp("(https?:\/\/[^\s]+\.(?:png|jpg|gif))", "gi"), "$1 <img src='$1 ' hspace='20' width='200'/>");
     return vhodnoBesedilo;
 
 }
