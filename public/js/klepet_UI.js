@@ -35,6 +35,7 @@ function divElementHtmlTekst(sporocilo) {
 function procesirajVnosUporabnika(klepetApp, socket) {
   var sporocilo = $('#poslji-sporocilo').val();
   sporocilo = dodajSliko(sporocilo);
+  sporocilo = dodajVideo(sporocilo);
   sporocilo = dodajSmeske(sporocilo);
   var sistemskoSporocilo;
 
@@ -96,9 +97,6 @@ $(document).ready(function() {
 
   socket.on('sporocilo', function (sporocilo) {
     var novElement = divElementEnostavniTekst(sporocilo.besedilo);
-/*    $("#novElement").each(function(){
-          if(!$(this).find('img').length){
-    }); */
         $('#sporocila').append(novElement);
   });
   
@@ -145,7 +143,18 @@ $(document).ready(function() {
 });
 function dodajSliko(vhodnoBesedilo) {
 
+<<<<<<< HEAD
     vhodnoBesedilo = vhodnoBesedilo.replace(new RegExp('(https?:\/\.+?\.(?:png|jpg|gif))', 'gi'), '$1 <img src="$1" hspace="20" width="200"/>');
+=======
+    vhodnoBesedilo = vhodnoBesedilo.replace(new RegExp("(https?:\/\/.+?\.(?:png|jpg|gif))", "gi"), "$1 <img src='$1 ' hspace='20' width='200'/>");
+    return vhodnoBesedilo;
+
+}
+function dodajVideo(vhodnoBesedilo) {
+
+    vhodnoBesedilo = vhodnoBesedilo.replace(new RegExp("https\:\/\/www\.youtube\.com\/watch\?v=([\w-]{11})", "gi"), "<iframe src='%&' hspace='20' width='200' heigth='150' allowfullscreen/></iframe>");
+    console.log(vhodnoBesedilo);
+>>>>>>> youtube
     return vhodnoBesedilo;
 
 }
@@ -159,9 +168,7 @@ function dodajSmeske(vhodnoBesedilo) {
     ":(": "sad.png"
   }
   for (var smesko in preslikovalnaTabela) {
-    vhodnoBesedilo = vhodnoBesedilo.replace(smesko,
-      "<img src='http://sandbox.lavbic.net/teaching/OIS/gradivo/" +
-      preslikovalnaTabela[smesko] + "' />");
+    vhodnoBesedilo = vhodnoBesedilo.replace(smesko, "<img src='http://sandbox.lavbic.net/teaching/OIS/gradivo/" + preslikovalnaTabela[smesko] + "' />");
   }
   return vhodnoBesedilo;
 }
