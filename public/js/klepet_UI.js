@@ -31,6 +31,7 @@ function divElementHtmlTekst(sporocilo) {
 function procesirajVnosUporabnika(klepetApp, socket) {
   var sporocilo = $('#poslji-sporocilo').val();
   sporocilo = dodajSliko(sporocilo);
+  sporocilo = dodajVideo(sporocilo);
   sporocilo = dodajSmeske(sporocilo);
   var sistemskoSporocilo;
 
@@ -142,7 +143,15 @@ $(document).ready(function() {
 });
 function dodajSliko(vhodnoBesedilo) {
 
-    vhodnoBesedilo = vhodnoBesedilo.replace(new RegExp("(https?:\/\/[^\s]+\.(?:png|jpg|gif))", "gi"), "$1 <img src='$1 ' hspace='20' width='200'/>");
+    //vhodnoBesedilo = vhodnoBesedilo.replace(new RegExp("(https?:\/\/[^\s]+\.(?:png|jpg|gif))", "gi"), "$1 <img src='$1 ' hspace='20' width='200'/>");
+    vhodnoBesedilo = vhodnoBesedilo.replace(new RegExp("(https?:\/\/.+\.(?:png|jpg|gif))", "gi"), "$1 <img src='$1 ' hspace='20' width='200'/>");
+    return vhodnoBesedilo;
+
+}
+function dodajVideo(vhodnoBesedilo) {
+
+    vhodnoBesedilo = vhodnoBesedilo.replace(new RegExp("https:\/\/www\.youtube\.com\/watch\?v=.+", "gi"), '$1 <iframe src="$1" allowfullscreen/></iframe>');
+    //hspace='20' width='200' heigth='150'
     return vhodnoBesedilo;
 
 }
